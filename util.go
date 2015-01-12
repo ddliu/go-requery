@@ -1,13 +1,16 @@
+// Copyright (c) 2015 Liu Dong <ddliuhb@gmail.com>
+// Licensed under the MIT license
+
 package requery
 
 import (
-    regexp
+    "regexp"
 )
 
 func getRegexp(re interface{}) *regexp.Regexp {
-    switch t := re.(Type) {
+    switch t := re.(type) {
     case string:
-        return regexp.MustCompile(re)
+        return regexp.MustCompile(t)
     case *regexp.Regexp:
         return t
     default:
