@@ -1,4 +1,4 @@
-# go-requery
+# go-requery [![Build Status](https://travis-ci.org/ddliu/go-requery.svg)](https://travis-ci.org/ddliu/go-requery)
 
 Query text with the power of regexp.
 
