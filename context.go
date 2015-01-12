@@ -7,6 +7,9 @@ import (
     "fmt"
 )
 
+// Create a doc to query.
+// 
+// Type of content can be string or []byte
 func NewDoc(content interface{}) *Context {
     c := &Context {
         Names: make(map[string]int),
@@ -54,6 +57,12 @@ func (this *Context) Bytes() []byte {
     return nil
 }
 
+func (this *Context) createEmptySub() *Context {
+    return &Context {
+        Parent: this,
+    }
+}
+
 // Find the first match
 func (this *Context) Find(re interface{}) *Context {
     r := getRegexp(re)
@@ -70,6 +79,15 @@ func (this *Context) Find(re interface{}) *Context {
         Parent: this,
         List: matches,
         Names: names,
+    }
+
+    return result
+}
+
+func (this *Context) MustFind(re interface{}) *Context {
+    result := this.Find(re)
+    if result.Empty() {
+        panic("Not found")
     }
 
     return result
@@ -101,10 +119,23 @@ func (this *Context) FindAll(re interface{}) Collection {
     return result
 }
 
+func (this *Context) MustFindAll(re interface{}) Collection {
+    result := this.FindAll(re)
+    if len(result) == 0 {
+        panic("Not found")
+    }
+
+    return result
+}
+
+// Is it an empty context
 func (this *Context) Empty() bool {
     return this.List == nil
 }
 
+// Get the sub match by index.
+// 
+// If index is string, the coresponding named match is returned.
 func (this *Context) Sub(s interface{}) *Context {
     isEmpty := this.Empty()
 
@@ -117,11 +148,11 @@ func (this *Context) Sub(s interface{}) *Context {
 
         var result *Context
         if isEmpty {
-            result = NewDoc(nil)
+            result = this.createEmptySub()
         } else {
             result = NewDoc(this.List[i])
+            result.Parent = this
         }
-        result.Parent = this
 
         return result
     case int:
@@ -131,15 +162,25 @@ func (this *Context) Sub(s interface{}) *Context {
 
         var result *Context
         if isEmpty {
-            result = NewDoc(nil)
+            result = this.createEmptySub()
         } else {
             result = NewDoc(this.List[t])
+            result.Parent = this
         }
-
-        result.Parent = this
 
         return result
     default:
         panic(fmt.Sprintf("invalid sub index: %v", s))
     }
+}
+
+
+// Return sub match string by index.
+func (this *Context) SubString(s interface{}) string {
+    return this.Sub(s).String()
+}
+
+// Return sub match bytes by index.
+func (this *Context) SubBytes(s interface{}) []byte {
+    return this.Sub(s).Bytes()
 }

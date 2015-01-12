@@ -38,6 +38,8 @@ Context.FindAll
 Context.String
 Context.Bytes
 Context.Sub
+Context.SubString
+Context.SubBytes
 ```
 
 ### Collection
@@ -45,4 +47,5 @@ Context.Sub
 ```go
 Collection.Find
 Collection.FindAll
+Collection.Each
 ```
