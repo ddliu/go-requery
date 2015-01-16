@@ -26,3 +26,12 @@ func TestCommon(t *testing.T) {
         t.Error()
     }
 }
+
+func TestGetColumn(t *testing.T) {
+    doc := getDoc()
+
+    list := doc.FindAll(`<a\s+href="(.+?)"`).SubStringAll(1)
+    if list[0] != "http://www.ycombinator.com" {
+        t.Error(list)
+    }
+}

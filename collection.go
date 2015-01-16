@@ -50,6 +50,28 @@ func (this Collection) MustFindAll(s interface{}) Collection {
     return result
 }
 
+// Get a column of string
+func (this Collection) SubStringAll(s interface{}) []string {
+    result := make([]string, len(this))
+
+    for k, c := range this {
+        result[k] = c.SubString(s)
+    }
+
+    return result
+}
+
+// Get a column of bytes
+func (this Collection) SubBytesAll(s interface{}) [][]byte {
+    result := make([][]byte, len(this))
+
+    for k, c := range this {
+        result[k] = c.SubBytes(s)
+    }
+
+    return result
+}
+
 // Loop the collection
 func (this Collection) Each(f func(*Context)) Collection {
     for _, c := range this {

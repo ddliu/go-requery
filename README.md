@@ -12,10 +12,25 @@ import (
 )
 
 func main() {
-    doc := requery.NewDoc(`hello _xxxx_ world _xx_`)
-    doc.Find(`_x+_`).String()
-    doc.Find(`_(x+)_).Sub(1).String()
-    doc.FindAll(`_x+_`).String()
-    doc.FindAll(`_x+_`).FindAll(`_`)
+    // create doc
+    doc := requery.NewDoc(`<html>...</html>`)
+
+    // get the title tag
+    doc.Find(`<title>.*</title>`).String()
+
+    // get page title
+    doc.Find(`<title>(.*)</title>`.Sub(1).String()
+
+    // named match
+    doc.Find(`<title>(?P<title>.*)</title>`.Sub("title").String()
+
+    // a shortcut
+    doc.Find(`<title>(?P<title>.*)</title>`.SubString("title")
+
+    // collection
+    doc.FindAll(`<table>.*?</table>`)[0].String()
+
+    // column of string
+    doc.FindAll(`<table>.*?</table>`).FindAll(`<a\s+href="(.*?)">`).SubStringAll(1)
 }
 ```
