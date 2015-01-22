@@ -17,3 +17,14 @@ func getRegexp(re interface{}) *regexp.Regexp {
         panic("not a regexp")
     }
 }
+
+func getRegexpString(re interface{}) string {
+    switch t := re.(type) {
+    case string:
+        return t
+    case *regexp.Regexp:
+        return t.String()
+    default:
+        return ""
+    }
+}

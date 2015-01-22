@@ -87,7 +87,7 @@ func (this *Context) Find(re interface{}) *Context {
 func (this *Context) MustFind(re interface{}) *Context {
     result := this.Find(re)
     if result.Empty() {
-        panic("Not found")
+        panic("Match not found: " + getRegexpString(re))
     }
 
     return result
@@ -122,7 +122,7 @@ func (this *Context) FindAll(re interface{}) Collection {
 func (this *Context) MustFindAll(re interface{}) Collection {
     result := this.FindAll(re)
     if len(result) == 0 {
-        panic("Not found")
+        panic("Match not found: " + getRegexpString(re))
     }
 
     return result

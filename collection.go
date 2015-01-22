@@ -23,7 +23,7 @@ func (this Collection) Find(s interface{}) *Context {
 func (this Collection) MustFind(s interface{}) *Context {
     c := this.Find(s)
     if c.Empty() {
-        panic("Not found")
+        panic("Match not found: " + getRegexpString(s))
     }
 
     return c
@@ -44,7 +44,7 @@ func (this Collection) FindAll(s interface{}) Collection {
 func (this Collection) MustFindAll(s interface{}) Collection {
     result := this.FindAll(s)
     if len(result) == 0 {
-        panic("Not found")
+        panic("Match not found: " + getRegexpString(s))
     }
 
     return result
